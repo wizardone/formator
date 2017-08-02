@@ -1,7 +1,17 @@
 require 'formator/version'
+require 'formator/config'
 require 'formator/flow'
 require 'formator/step'
 
 module Formator
-  # Your code goes here...
+
+  class << self
+    def configure
+      yield config
+    end
+
+    def config
+      @config ||= Config
+    end
+  end
 end

@@ -1,9 +1,5 @@
 # Formator
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/formator`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
-
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -21,8 +17,16 @@ Or install it yourself as:
     $ gem install formator
 
 ## Usage
+First you need to configure the wizard so it knows the object that you
+interact with (usually a used model) and the amount of steps that this
+object needs to undertake.
 
-TODO: Write usage instructions here
+```ruby
+Formator.configure do |config|
+  config.klass = :user
+  config.steps = []
+end
+```
 
 ## Development
 
