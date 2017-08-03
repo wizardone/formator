@@ -22,7 +22,7 @@ interact with (usually a used model) and the amount of steps that this
 object needs to undertake.
 
 ```ruby
-Formator.configure do |config|
+Forminator.configure do |config|
   config.klass = :user
   config.steps = []
 end
@@ -40,9 +40,12 @@ end
 ```
 Then you can do:
 ```ruby
-first_step = FirstStep.new(params[:user])
+FirstStep.(some_params)
+=> [:valid, some_params]
+# Internally this does:
+first_step = FirstStep.new(some_params)
 first_step.validate
-first_step.ok?
+return [first_step.ok?, some_params]
 ```
 
 `Forminator` uses `Hanami::Validations` which in it's own term uses
@@ -55,7 +58,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/Stefan Slaveykov/formator. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/wizardone/forminator. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 ## License
