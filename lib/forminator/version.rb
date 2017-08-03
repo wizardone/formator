@@ -1,3 +1,3 @@
-module Formator
+module Forminator
   VERSION = "0.1.0"
 end

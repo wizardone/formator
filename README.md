@@ -5,7 +5,7 @@
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'formator'
+gem 'forminator'
 ```
 
 And then execute:
@@ -14,7 +14,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install formator
+    $ gem install forminator
 
 ## Usage
 First you need to configure the wizard so it knows the object that you
@@ -27,7 +27,26 @@ Formator.configure do |config|
   config.steps = []
 end
 ```
+To build a form wizard step you need to subclass the `Forminator::Step`
+class
 
+```ruby
+class FirstStep < Forminator::Step
+  validations do
+    required(:email) { filled? }
+    required(:password) { filled? }
+  end
+end
+```
+Then you can do:
+```ruby
+first_step = FirstStep.new(params[:user])
+first_step.validate
+first_step.ok?
+```
+
+`Forminator` uses `Hanami::Validations` which in it's own term uses
+`Dry::Validation` :heart
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

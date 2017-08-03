@@ -1,4 +1,4 @@
-module Formater
+module Forminator
   class Flow
     
   end
