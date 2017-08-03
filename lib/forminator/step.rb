@@ -11,19 +11,17 @@ module Forminator
     attr_reader :params
 
     def self.call(params)
-      new(params).validate
+      validity = new(params).valid?
+
+      [validity, params]
     end
 
-    def initialize(params)
-      @params = params
-    end
-
-    def validate
-      super
-    end
-
-    def ok?
+    def valid?
       validate.success?
+    end
+
+    def persist(object)
+      config.persist.(object)
     end
   end
 end

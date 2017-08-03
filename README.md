@@ -24,6 +24,7 @@ object needs to undertake.
 ```ruby
 Forminator.configure do |config|
   config.klass = :user
+  config.persist = -> (user) { user.save }
   config.steps = []
 end
 ```

@@ -1,4 +1,12 @@
 require 'spec_helper'
+require 'byebug'
+
+class FirstStep < Forminator::Step
+  validations do
+    required(:email) { filled? }
+    required(:name) { filled? }
+  end
+end
 
 RSpec.describe Forminator do
   it 'has a version number' do
@@ -7,23 +15,49 @@ RSpec.describe Forminator do
 end
 
 RSpec.describe Forminator::Step do
+  subject { FirstStep }
   let(:params) { { email: 'test@test.com', name: 'Test' } }
+  let(:invalid_params) { { email: 'test@test.com' } }
 
   describe '.call' do
+    #before do
+    #  step = instance_double(Forminator::Step, valid?: true)
+    #  expect(described_class).to receive(:new).with(params) { step }
+    #  expect(step).to receive(:valid?)
+    #end
+
     it 'initializes a step and validates it' do
-      step = instance_double(Forminator::Step, validate: true)
+      step = instance_double(Forminator::Step, valid?: true)
       expect(described_class).to receive(:new).with(params) { step }
-      expect(step).to receive(:validate)
+      expect(step).to receive(:valid?)
 
       described_class.call(params)
     end
+
+    it 'return the validity and initial params if valid' do
+      step = instance_double(Forminator::Step, valid?: true)
+      expect(described_class).to receive(:new).with(params) { step }
+      expect(step).to receive(:valid?)
+
+      expect(subject.call(params)).to eq [true, params]
+    end
+
+    it 'return the validity and initial params if not valid' do
+      step = instance_double(Forminator::Step, valid?: false)
+      expect(described_class).to receive(:new).with(invalid_params) { step }
+      expect(step).to receive(:valid?)
+
+      expect(subject.call(invalid_params)).to eq [false, invalid_params]
+    end
   end
 
-  describe '#initialize' do
-    it 'initializes the params' do
-      step = described_class.new(params)
+  describe "#valid?" do
+    it 'validates the params' do
+      dry_result = double('Dry::Validations::Result')
+      expect_any_instance_of(::Hanami::Validations).to receive(:validate) { dry_result }
+      expect(dry_result).to receive(:success?)
 
-      expect(step.params).to eq params
+      subject.new(params).valid?
     end
   end
 end
