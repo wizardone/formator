@@ -20,8 +20,8 @@ module Forminator
       validate.success?
     end
 
-    def persist(object)
-      config.persist.(object)
+    def persist?
+      true
     end
   end
 end

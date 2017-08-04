@@ -19,13 +19,15 @@ Or install it yourself as:
 ## Usage
 First you need to configure the wizard so it knows the object that you
 interact with (usually a used model) and the amount of steps that this
-object needs to undertake.
+object needs to undertake. If you like to persist the model you can
+supply a callable object that takes care of the persistence. Whether you
+want to persist after each step or after the final one is up to you.
 
 ```ruby
 Forminator.configure do |config|
   config.klass = :user
   config.persist = -> (user) { user.save }
-  config.steps = []
+  config.steps = [FirstStep, MiddleStep, LastStep]
 end
 ```
 To build a form wizard step you need to subclass the `Forminator::Step`
@@ -36,6 +38,11 @@ class FirstStep < Forminator::Step
   validations do
     required(:email) { filled? }
     required(:password) { filled? }
+  end
+
+  # Persist the object after the step is complete
+  def persist?
+    true
   end
 end
 ```
