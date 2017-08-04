@@ -21,7 +21,11 @@ module Forminator
     end
 
     def persist?
-      true
+      false
+    end
+
+    def persist
+      Forminator.config.persist.call
     end
   end
 end

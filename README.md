@@ -40,7 +40,8 @@ class FirstStep < Forminator::Step
     required(:password) { filled? }
   end
 
-  # Persist the object after the step is complete
+  # By default this returns false, so if you want to persist the object
+  # after each step you need to overwrite the method
   def persist?
     true
   end
