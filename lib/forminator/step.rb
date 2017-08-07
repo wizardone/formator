@@ -24,8 +24,8 @@ module Forminator
       false
     end
 
-    def persist
-      Forminator.config.persist.call
+    def persist(object:, method: nil)
+      method&.call(object) || Forminator.config.persist.call(object)
     end
   end
 end

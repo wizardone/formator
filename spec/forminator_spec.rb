@@ -12,6 +12,12 @@ class FirstStep < Forminator::Step
   end
 end
 
+Forminator.configure do |config|
+  config.klass = :user
+  config.persist = -> (user) { user.save }
+  config.steps = [FirstStep]
+end
+
 RSpec.describe Forminator do
   it 'has a version number' do
     expect(Forminator::VERSION).not_to be nil
@@ -66,6 +72,20 @@ RSpec.describe Forminator::Step do
       subject.class_eval { def persist?; false; end; }
 
       expect(subject.new(params).persist?).to be false
+    end
+  end
+
+  describe "#persist" do
+    it 'calls the configuren persistence method of the step' do
+      user = instance_double('User', save: true)
+
+      allow(Forminator::Config).to receive_message_chain('persist.call')
+
+      subject.new(params).persist(object: user)
+    end
+
+    it 'calls a custom persistence mechanism for each step' do
+
     end
   end
 end

@@ -45,6 +45,12 @@ class FirstStep < Forminator::Step
   def persist?
     true
   end
+
+  # This method will do the actual persisting. If you want to persist
+  #  after each step without any changes just call the parent method
+  def persist
+    super
+  end
 end
 ```
 Then you can do:
