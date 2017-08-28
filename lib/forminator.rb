@@ -6,6 +6,8 @@ require 'forminator/step'
 module Forminator
 
   class << self
+    attr_reader :config
+
     def configure
       yield config
     end

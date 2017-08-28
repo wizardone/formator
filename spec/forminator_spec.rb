@@ -28,6 +28,14 @@ RSpec.describe Forminator::Step do
   subject { FirstStep }
   let(:params) { { email: 'test@test.com', name: 'Test' } }
   let(:invalid_params) { { email: 'test@test.com' } }
+  let(:object) do
+    Object.class_eval do
+      # Simulate persistence
+      def save
+        true
+      end
+    end
+  end
 
   describe '.call' do
     #before do
@@ -37,19 +45,20 @@ RSpec.describe Forminator::Step do
     #end
 
     it 'initializes a step and validates it' do
-      step = instance_double(Forminator::Step, valid?: true)
+      step = instance_double(Forminator::Step, valid?: true, persist?: true)
       expect(described_class).to receive(:new).with(params) { step }
       expect(step).to receive(:valid?)
+      expect(step).to receive(:persist)
 
-      described_class.call(params)
+      described_class.call(object, params)
     end
 
     it 'return the validity and initial params if valid' do
-      expect(subject.call(params)).to eq [true, params]
+      expect(subject.call(object, params)).to eq [true, params]
     end
 
     it 'return the validity and initial params if not valid' do
-      expect(subject.call(invalid_params)).to eq [false, invalid_params]
+      expect(subject.call(object, invalid_params)).to eq [false, invalid_params]
     end
   end
 

@@ -55,7 +55,8 @@ end
 ```
 Then you can do:
 ```ruby
-FirstStep.(some_params)
+user = User.new
+FirstStep.(user, some_params)
 => [:valid, some_params]
 # Internally this does:
 first_step = FirstStep.new(some_params)

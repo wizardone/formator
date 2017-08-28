@@ -8,10 +8,14 @@ module Forminator
 
     include ::Hanami::Validations
 
-    attr_reader :params
+    attr_reader :params, :object
 
-    def self.call(params)
-      validity = new(params).valid?
+    def self.call(object, params)
+      step = new(params)
+      validity = step.valid?
+      if validity && step.persist?
+        step.persist(object: object)
+      end
 
       [validity, params]
     end
