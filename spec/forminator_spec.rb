@@ -83,7 +83,12 @@ RSpec.describe Forminator::Step do
     end
 
     it 'calls a custom persistence mechanism for each step' do
+      user = instance_double('User', save: true)
+      persistence_logic = -> (user) { user.save }
 
+      expect(user).to receive(:save)
+
+      subject.new(params).persist(object: user, persistence: persistence_logic)
     end
   end
 end
