@@ -29,21 +29,10 @@ RSpec.describe Forminator::Step do
   let(:params) { { email: 'test@test.com', name: 'Test' } }
   let(:invalid_params) { { email: 'test@test.com' } }
   let(:object) do
-    Object.class_eval do
-      # Simulate persistence
-      def save
-        true
-      end
-    end
+    Object.class_eval { def save; true end }
   end
 
   describe '.call' do
-    #before do
-    #  step = instance_double(Forminator::Step, valid?: true)
-    #  expect(described_class).to receive(:new).with(params) { step }
-    #  expect(step).to receive(:valid?)
-    #end
-
     it 'initializes a step and validates it' do
       step = instance_double(Forminator::Step, valid?: true, persist?: true)
       expect(described_class).to receive(:new).with(params) { step }
@@ -54,15 +43,15 @@ RSpec.describe Forminator::Step do
     end
 
     it 'return the validity and initial params if valid' do
-      expect(subject.call(object, params)).to eq [true, params]
+      expect(subject.call(object, params)).to eq [{ valid: true }, params]
     end
 
     it 'return the validity and initial params if not valid' do
-      expect(subject.call(object, invalid_params)).to eq [false, invalid_params]
+      expect(subject.call(object, invalid_params)).to eq [{ valid: false }, invalid_params]
     end
   end
 
-  describe "#valid?" do
+  describe '#valid?' do
     it 'returns true - the params are valid' do
       expect(subject.new(params).valid?).to be true
     end
@@ -72,7 +61,7 @@ RSpec.describe Forminator::Step do
     end
   end
 
-  describe "#persist?" do
+  describe '#persist?' do
     it 'returns true - persists the object' do
       expect(subject.new(params).persist?).to be true
     end
@@ -84,7 +73,7 @@ RSpec.describe Forminator::Step do
     end
   end
 
-  describe "#persist" do
+  describe '#persist' do
     it 'calls the configuren persistence method of the step' do
       user = instance_double('User', save: true)
 

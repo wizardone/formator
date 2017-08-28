@@ -45,27 +45,26 @@ class FirstStep < Forminator::Step
   def persist?
     true
   end
-
-  # This method will do the actual persisting. If you want to persist
-  #  after each step without any changes just call the parent method
-  def persist
-    super
-  end
 end
 ```
 Then you can do:
 ```ruby
 user = User.new
 FirstStep.(user, some_params)
-=> [:valid, some_params]
+=> [{ valid: true }, some_params]
 # Internally this does:
 first_step = FirstStep.new(some_params)
 first_step.validate
-return [first_step.ok?, some_params]
+=> [{ first_step.valid? }, some_params]
 ```
 
+Each step always returns an array of 2 elements: a hash with the
+validity and the initially passed params. This allows for easy chaining
+of events.
+
 `Forminator` uses `Hanami::Validations` which in it's own term uses
-`Dry::Validation` :heart
+`Dry::Validation` :heart. You can refer them for a detailed DSL about
+validations.
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

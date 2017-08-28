@@ -17,7 +17,7 @@ module Forminator
         step.persist(object: object)
       end
 
-      [validity, params]
+      [{ valid: validity }, params]
     end
 
     def valid?
