@@ -1,17 +1,6 @@
 require 'spec_helper'
 require 'byebug'
 
-class FirstStep < Forminator::Step
-  validations do
-    required(:email) { filled? }
-    required(:name) { filled? }
-  end
-
-  def persist?
-    true
-  end
-end
-
 Forminator.configure do |config|
   config.klass = :user
   config.persist = -> (user) { user.save }

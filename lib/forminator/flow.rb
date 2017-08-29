@@ -7,11 +7,12 @@ module Forminator
       @current_step = initial_step
     end
 
-    def next
+    def next_step
       steps[steps.index(current_step) + 1]
     end
 
-    def previous
+    def previous_step
+      # TODO: there is no previous step??
       steps[steps.index(current_step) - 1]
     end
 
