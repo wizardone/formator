@@ -10,11 +10,11 @@ module Forminator
 
     attr_reader :params, :object
 
-    def self.call(object, params)
+    def self.call(object, params, **options)
       step = new(params)
       validity = step.valid?
       if validity && step.persist?
-        step.persist(object: object)
+        step.persist(object: object, persist: options[:persist])
       end
 
       [{ valid: validity }, params]
@@ -28,8 +28,8 @@ module Forminator
       false
     end
 
-    def persist(object:, persistence: nil)
-      persistence&.call(object) || Forminator.config.persist.call(object)
+    def persist(object:, persist: nil)
+      persist&.call(object) || Forminator.config.persist.call(object)
     end
   end
 end

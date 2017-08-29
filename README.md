@@ -53,10 +53,18 @@ Then you can do:
 user = User.new
 FirstStep.(user, some_params)
 => [{ valid: true }, some_params]
-# Internally this does:
-first_step = FirstStep.new(some_params)
-first_step.validate
-=> [{ first_step.valid? }, some_params]
+```
+If you want to call a custom persistence logic for a certain step you
+can pass an optionable callable object like so:
+
+```ruby
+class CustomPersistenceLogic
+  def call
+    # persistence logic goes here
+  end
+end
+user = User.new
+FirstStep.(user, some_params, persist: CustomPersistenceLogic.new)
 ```
 
 Each step always returns an array of 2 elements: a hash with the
