@@ -67,13 +67,21 @@ user = User.new
 FirstStep.(user, some_params, persist: CustomPersistenceLogic.new)
 ```
 
+Want to build a whole flow of steps? Just use the `Forminator::Flow`
+class
+```ruby
+steps = [FirstStep, SecondStep, LastStep]
+flow = Forminator::Flow.new(steps: steps)
+```
+
 Each step always returns an array of 2 elements: a hash with the
 validity and the initially passed params. This allows for easy chaining
 of events.
 
 `Forminator` uses `Hanami::Validations` which in it's own term uses
-`Dry::Validation` :heart. You can refer them for a detailed DSL about
+`Dry::Validation` :heart. You can [refer](https://github.com/hanami/validations) them for a detailed DSL about
 validations.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
