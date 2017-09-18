@@ -70,8 +70,10 @@ RSpec.describe Forminator::Step do
   describe '#persist' do
     it 'calls the configured persistence method of the step' do
       user = instance_double('User', save: true)
+      persistence_logic = Forminator.config.persist
 
-      allow(Forminator::Config).to receive_message_chain('persist.call')
+      expect(Forminator.config).to receive(:persist) { persistence_logic }
+      expect(persistence_logic).to receive(:call).with(user)
 
       subject.new(params).persist(object: user)
     end
@@ -80,6 +82,7 @@ RSpec.describe Forminator::Step do
       user = instance_double('User', save: true)
       persistence_logic = -> (user) { user.save }
 
+      expect(persistence_logic).to receive(:call).with(user)
       expect(user).to receive(:save)
 
       subject.new(params).persist(object: user, persist: persistence_logic)
