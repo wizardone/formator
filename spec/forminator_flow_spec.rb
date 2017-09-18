@@ -51,4 +51,14 @@ RSpec.describe Forminator::Flow do
       expect(flow.steps).to_not include(BogusStep)
     end
   end
+
+  describe '#remove' do
+    it 'removes a step from the steps array' do
+      flow = described_class.new(steps: steps)
+      flow.remove(step: SecondStep)
+
+      expect(flow.steps).to_not include(SecondStep)
+      expect(flow.steps).to match_array([FirstStep])
+    end
+  end
 end

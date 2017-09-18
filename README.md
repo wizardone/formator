@@ -19,8 +19,7 @@ Or install it yourself as:
 
 ## Usage
 First you need to configure the wizard so it knows the object that you
-interact with (usually a used model) and the amount of steps that this
-object needs to undertake. If you like to persist the model you can
+interact with (usually a used model). If you like to persist the model you can
 supply a callable object that takes care of the persistence. Whether you
 want to persist after each step or after the final one is up to you.
 
@@ -28,7 +27,6 @@ want to persist after each step or after the final one is up to you.
 Forminator.configure do |config|
   config.klass = :user
   config.persist = -> (user) { user.save }
-  config.steps = [FirstStep, MiddleStep, LastStep]
 end
 ```
 To build a form wizard step you need to subclass the `Forminator::Step`
@@ -51,32 +49,52 @@ end
 Then you can do:
 ```ruby
 user = User.new
+some_params = { email: 'test@test.com', password: 'ineedtocryptmypassword' }
 FirstStep.(user, some_params)
 => [{ valid: true }, some_params]
 ```
+Each step always returns an array of 2 elements: a hash with the
+validity and the initially passed params. This allows for easy chaining
+of events.
+
+
 If you want to call a custom persistence logic for a certain step you
 can pass an optionable callable object like so:
 
 ```ruby
 class CustomPersistenceLogic
-  def call
+  def call(user)
     # persistence logic goes here
   end
 end
 user = User.new
 FirstStep.(user, some_params, persist: CustomPersistenceLogic.new)
 ```
+The callable object will receive the original object that you interact
+with.
 
 Want to build a whole flow of steps? Just use the `Forminator::Flow`
 class
 ```ruby
 steps = [FirstStep, SecondStep, LastStep]
 flow = Forminator::Flow.new(steps: steps)
+flow.current_step
+=> FirstStep
+flow.next_step
+=> SecondStep
 ```
-
-Each step always returns an array of 2 elements: a hash with the
-validity and the initially passed params. This allows for easy chaining
-of events.
+You can also add steps on the way with:
+```ruby
+flow.add(step: IntermediateStep)
+```
+Keep in mind that you can only add steps that inherit from
+`Forminator::Step`.
+You can also remove steps:
+```ruby
+flow.remove(step: LastStep)
+=> LastStep
+```
+Calling `remove` will return the removed step.
 
 `Forminator` uses `Hanami::Validations` which in it's own term uses
 `Dry::Validation` :heart. You can [refer](https://github.com/hanami/validations) them for a detailed DSL about
