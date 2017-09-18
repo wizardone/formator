@@ -46,9 +46,10 @@ RSpec.describe Forminator::Flow do
 
     it 'does not add another step if the step is not a subclass of forminator' do
       flow = described_class.new(steps: steps)
-      flow.add(step: BogusStep)
 
-      expect(flow.steps).to_not include(BogusStep)
+      expect {
+        flow.add(step: BogusStep)
+      }.to raise_error(Forminator::InvalidStep)
     end
   end
 

@@ -21,7 +21,7 @@ module Forminator
     end
 
     def add(step:)
-      return unless step.ancestors.include?(Forminator::Step)
+      raise Forminator::InvalidStep unless step.ancestors.include?(Forminator::Step)
       steps << step
     end
 
