@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'forminator/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "formator"
+  spec.name          = "forminator"
   spec.version       = Forminator::VERSION
   spec.authors       = ["Stefan Slaveykov"]
   spec.email         = ["wizard.oneandonly@gmail.com"]
