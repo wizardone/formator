@@ -1,3 +1,4 @@
+require 'byebug'
 module Forminator
   class Flow
     attr_reader :steps, :current_step
@@ -18,6 +19,11 @@ module Forminator
 
     def initial_step
       steps.first
+    end
+
+    def add(step:)
+      return unless step.ancestors.include?(Forminator::Step)
+      steps << step
     end
   end
 end

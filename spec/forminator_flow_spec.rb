@@ -35,4 +35,20 @@ RSpec.describe Forminator::Flow do
       expect(flow.next_step).to eq steps.last
     end
   end
+
+  describe '#add' do
+    it 'adds another step' do
+      flow = described_class.new(steps: steps)
+      flow.add(step: ThirdStep)
+
+      expect(flow.steps).to include(ThirdStep)
+    end
+
+    it 'does not add another step if the step is not a subclass of forminator' do
+      flow = described_class.new(steps: steps)
+      flow.add(step: BogusStep)
+
+      expect(flow.steps).to_not include(BogusStep)
+    end
+  end
 end

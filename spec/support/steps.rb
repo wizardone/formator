@@ -19,3 +19,17 @@ class SecondStep < Forminator::Step
     true
   end
 end
+
+class ThirdStep < Forminator::Step
+  validations do
+    required(:card_number) { filled? }
+  end
+
+  def persist?
+    true
+  end
+end
+
+class BogusStep < Object
+  
+end
