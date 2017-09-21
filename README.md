@@ -1,5 +1,6 @@
 # Forminator
 [![Build Status](https://travis-ci.org/wizardone/forminator.svg?branch=master)](https://travis-ci.org/wizardone/forminator)
+[![codecov](https://codecov.io/gh/wizardone/forminator/branch/master/graph/badge.svg)](https://codecov.io/gh/wizardone/forminator)
 
 ## Installation
 

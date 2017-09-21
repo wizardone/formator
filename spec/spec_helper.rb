@@ -1,5 +1,9 @@
 require "bundler/setup"
 require "forminator"
+require 'simplecov'
+SimpleCov.start
+require 'codecov'
+SimpleCov.formatter = SimpleCov::Formatter::Codecov
 
 Dir[File.join(File.expand_path('support', __dir__), '*.rb')].each { |file| require file }
 
